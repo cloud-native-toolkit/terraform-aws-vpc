@@ -3,3 +3,9 @@
 #  value       = "value"
 #  depends_on  = [<some resource>]
 #}
+
+
+//Remove later
+# output "default-acl" {
+#   value = aws_default_network_acl.default
+# }

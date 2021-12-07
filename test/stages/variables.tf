@@ -1,50 +1,41 @@
-
-# Resource Group Variables
-variable "resource_group_name" {
-  type        = string
-  description = "Existing resource group where the IKS cluster will be provisioned."
+variable "resource-group" {
+ type = string
+ description = "Name of the resource group "
+ default= "software-everywhere"
 }
 
-variable "ibmcloud_api_key" {
-  type        = string
-  description = "The api key for IBM Cloud access"
+variable "resource-tags" {
+  type=map
+  default = {
+    Name = "ind-vpc"
+    project="software-everywhere"
+  }
 }
-
-variable "region" {
+variable "name" {
   type        = string
-  description = "Region for VLANs defined in private_vlan_number and public_vlan_number."
+  description = "The name of the vpc instance"
+  default     = ""
 }
-
-variable "namespace" {
+variable "vpc-id" {
   type        = string
-  description = "Namespace for tools"
-}
-
-variable "cluster_name" {
-  type        = string
-  description = "The name of the cluster"
+  description = "The id of the vpc instance"
   default     = ""
 }
 
-variable "cluster_type" {
+variable "internal_cidr" {
   type        = string
-  description = "The type of cluster that should be created (openshift or kubernetes)"
+  description = "The cidr range of the internal network"
+  default     = "10.0.0.0/16"
 }
 
-variable "cluster_exists" {
-  type        = string
-  description = "Flag indicating if the cluster already exists (true or false)"
-  default     = "true"
-}
-
-variable "name_prefix" {
-  type        = string
-  description = "Prefix name that should be used for the cluster and services. If not provided then resource_group_name will be used"
-  default     = ""
-}
-
-variable "vpc_cluster" {
+variable "provision" {
   type        = bool
-  description = "Flag indicating that this is a vpc cluster"
-  default     = false
+  description = "Flag indicating that the instance should be provisioned. If false then an existing instance will be looked up"
+  default     = true
+}
+
+variable "instance_tenancy" {
+  type        = string
+  description = "Instance is shared / dedicated, etc. #[default, dedicated, host]"
+  default     = "default"
 }

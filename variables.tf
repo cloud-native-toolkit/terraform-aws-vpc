@@ -1,7 +1,24 @@
+variable "resource-group" {
+ type = string
+ description = "Name of the resource group "
+ default= "software-everywhere"
+}
 
+variable "resource-tags" {
+  type=map
+  default = {
+    Name = "ind-vpc"
+    project="software-everywhere"
+  }
+}
 variable "name" {
   type        = string
   description = "The name of the vpc instance"
+  default     = ""
+}
+variable "vpc-id" {
+  type        = string
+  description = "The id of the vpc instance"
   default     = ""
 }
 
