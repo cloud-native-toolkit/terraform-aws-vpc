@@ -1,8 +1,8 @@
 locals {
  vpc-count-index =""
- acl_name =""
-
-
+ acl_id = tolist(data.aws_network_acls.ind-vpc-network-acls.ids)
+ vpc_name   = var.name != "" ? var.name : "${var.prefix-name}-vpc" 
+ 
 }
 
 # Create a VPC
@@ -12,7 +12,10 @@ resource "aws_vpc" "ind-vpc" {
   instance_tenancy     = var.instance_tenancy
   enable_dns_support   = true
   enable_dns_hostnames = false
-  tags = var.resource-tags
+  # tags = var.resource-tags
+  tags = {
+    Name= local.vpc_name
+  }
 }
 
 //Remove later
@@ -21,13 +24,14 @@ output "new-vpc-out" {
 }
 
 data aws_vpc "ind-vpc" {
-  id = var.provision ? aws_vpc.ind-vpc[0].id : var.vpc-id
+  id = var.provision ? aws_vpc.ind-vpc[0].id : var.vpc-id  
 }
 output existing_vpc_output {
   value = data.aws_vpc.ind-vpc
 }
 data "aws_network_acls" "ind-vpc-network-acls" {
-  vpc_id = var.provision ? aws_vpc.ind-vpc[0].id : var.vpc-id
+  
+   vpc_id =data.aws_vpc.ind-vpc.id
   //vpc_id ="vpc-00124f171b3a21879"
   filter {
     name   = "default"
@@ -35,16 +39,14 @@ data "aws_network_acls" "ind-vpc-network-acls" {
   }
 }
 
-output ind-vpc-acl-output {
-  value = data.aws_network_acls.ind-vpc-network-acls
+output local-acl-id {
+ value = local.acl_id[0]
 }
 
-
-/* resource "aws_default_network_acl" "default" {
-  #for_each = data.aws_network_acls.ind-vpc-network-acls.ids
-  //acl_name = each.key
-  /* default_network_acl_id = (data.aws_network_acls.ind-vpc-network-acls.ids)[0]
-  #data.aws_network_acls.ind-vpc-network-acls.default_network_acl_id
+ resource "aws_default_network_acl" "default" {
+  
+  default_network_acl_id = local.acl_id[0]
+  
   # if no rules defined, deny all traffic in this ACL
   egress {          #allow_internal_egress
     protocol   = -1 # -1 'all' protocol
@@ -57,7 +59,7 @@ output ind-vpc-acl-output {
 
   ingress {         #allow_internal_ingress
     protocol   = -1 #-1 'all' protocol 
-    rule_no    = 100
+    rule_no    = 200
     action     = "allow"
     cidr_block = data.aws_vpc.ind-vpc.cidr_block
     from_port  = 0
@@ -66,7 +68,7 @@ output ind-vpc-acl-output {
 
   ingress {            #deny_external_ssh
     protocol   = "tcp" #-1 'all' protocol 
-    rule_no    = 200
+    rule_no    = 300
     action     = "deny"
     cidr_block = "0.0.0.0/0"
     from_port  = 22
@@ -75,27 +77,31 @@ output ind-vpc-acl-output {
 
   ingress {            #deny_external_rdp
     protocol   = "tcp" # -1 'all' protocol
-    rule_no    = 300
+    rule_no    = 400
     action     = "deny"
     cidr_block = "0.0.0.0/0"
     from_port  = 3389
     to_port    = 3389
   }
 
-  ingress {         #deny_external_ingress
-    protocol   = -1 # -1 'all' protocol
-    rule_no    = 400
-    action     = "deny"
-    cidr_block = "0.0.0.0/0"
-    from_port  = 0
-    to_port    = 0
-  }
+  # ingress {         #deny_external_ingress
+  #   protocol   = -1 # -1 'all' protocol
+  #   rule_no    = 500
+  #   action     = "deny"
+  #   cidr_block = "0.0.0.0/0"
+  #   from_port  = 0
+  #   to_port    = 0
+  # }
 
-  tags = var.resource-tags
+ # tags = var.resource-tags
+  
+  tags ={
+    Name = "${local.vpc_name}-default_acl"
+  }
   
 
 }
-*/
+
 
 
 #====#
@@ -106,8 +112,12 @@ output ind-vpc-acl-output {
 
 # }
 resource "aws_default_security_group" "default_security_group" {
-  tags = var.resource-tags
+  #tags = var.resource-tags
   vpc_id      = data.aws_vpc.ind-vpc.id
+  tags ={
+    Name = "${local.vpc_name}-default_sg"
+  }
+  
 }
 
 resource "aws_security_group_rule" "default_inbound_ping" {
