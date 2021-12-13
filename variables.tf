@@ -1,8 +1,3 @@
-variable "resource_group" {
-  type        = string
-  description = "Name of the resource group "
-  default     = "software-everywhere"
-}
 variable "name" {
   type        = string
   description = "The name of the vpc instance"
@@ -14,9 +9,9 @@ variable "vpc_id" {
   default     = ""
 }
 
-variable "internal_cidr" {
+variable "internal_cidr" {  
   type        = string
-  description = "The cidr range of the internal network"
+  description = "The cidr range of the internal network.Either provide manually or chose from AWS IPAM poolsß"
   default     = "10.0.0.0/16"
 }
 
