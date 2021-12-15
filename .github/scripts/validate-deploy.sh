@@ -1,7 +1,7 @@
 #!/bin/bash
 SCRIPT_DIR=$(cd $(dirname "$0"); pwd -P)
 echo "SCRIPT_DIR: ${SCRIPT_DIR}"
-export VPC_ID=$(terraform output -json | jq '."dev-vpc-id".value')
+export VPC_ID=$(terraform output -json | jq -r '."dev-vpc-id".value')
 REGION=$(cat terraform.tfvars | grep -E "^region" | sed "s/region=//g" | sed 's/"//g')
 
 echo "VPC_ID: ${VPC_ID}"
@@ -12,7 +12,7 @@ aws configure set aws_access_key_id ${AWS_ACCESS_KEY_ID}
 aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
 
 echo "Checking VPC exists with ID in AWS: ${VPC_ID}"
-VPC_ID_OUT=$(aws ec2 describe-vpcs --vpc-ids ${VPC_ID} --query 'Vpcs[0].VpcId' --output=json) 
+VPC_ID_OUT=$(aws ec2 describe-vpcs --vpc-ids $VPC_ID --query 'Vpcs[0].VpcId' --output=text) 
 #VPC_ID_OUT=$(aws ec2 describe-vpcs ) 
 echo "VPC_ID_OUT: $VPC_ID_OUT"
 if [[ ( $VPC_ID_OUT == $VPC_ID) ]]; then
