@@ -4,10 +4,13 @@ echo "SCRIPT_DIR: ${SCRIPT_DIR}"
 export VPC_ID=$(terraform output -json | jq '."dev-vpc-id".value')
 REGION=$(cat terraform.tfvars | grep -E "^region" | sed "s/region=//g" | sed 's/"//g')
 
+export AWS_DEFAULT_REGION=REGION
+#echo "AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}"
+
 echo "VPC_ID: ${VPC_ID}"
 echo "REGION: ${REGION}"
 
-# aws configure 
+aws configure set region ${REGION}
 
 echo "Checking VPC exists with ID in AWS: ${VPC_ID}"
 VPC_ID_OUT=$(aws ec2 describe-vpcs --vpc-ids ${VPC_ID} --query 'Vpcs[0].VpcId' --output=json) 
