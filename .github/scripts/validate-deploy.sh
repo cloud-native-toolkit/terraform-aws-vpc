@@ -13,7 +13,7 @@ aws configure set aws_secret_access_key ${AWS_SECRET_ACCESS_KEY}
 
 echo "Checking VPC exists with ID in AWS: ${VPC_ID}"
 VPC_ID_OUT=$(aws ec2 describe-vpcs --vpc-ids $VPC_ID --query 'Vpcs[0].VpcId' --output=text) 
-#VPC_ID_OUT=$(aws ec2 describe-vpcs ) 
+
 echo "VPC_ID_OUT: $VPC_ID_OUT"
 if [[ ( $VPC_ID_OUT == $VPC_ID) ]]; then
   echo "VPC id found: ${VPC_ID_OUT}"
