@@ -16,6 +16,11 @@ variable "prefix_name" {
   description = "Prefix to be added to the names of resources which are being provisioned"
   default     = "swe"
 }
+variable "instance_tenancy" {
+  type        = string
+  description = "Instance is shared / dedicated, etc. #[default, dedicated, host]"
+  default     = "default"
+}
 
 variable "internal_cidr" {  
   type        = string
