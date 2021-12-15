@@ -20,7 +20,6 @@ data "aws_vpc" "vpc" {
   id = var.provision ? aws_vpc.vpc[0].id : var.vpc_id
 }
 
-
 data "aws_network_acls" "vpc-network-acls" {
   vpc_id = data.aws_vpc.vpc.id
   filter {
@@ -77,7 +76,6 @@ resource "aws_default_network_acl" "default" {
   #   to_port    = 0
   # }
 
-  # tags = var.resource-tags
 
   tags = {
     Name = "${local.vpc_name}-default_acl"

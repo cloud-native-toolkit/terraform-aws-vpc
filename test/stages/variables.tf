@@ -14,5 +14,17 @@ variable "secret_key"{
 variable "prefix_name" {
   type        = string
   description = "Prefix to be added to the names of resources which are being provisioned"
-  default     = "swe1"
+  default     = "swe"
+}
+
+variable "internal_cidr" {  
+  type        = string
+  description = "The cidr range of the internal network.Either provide manually or chose from AWS IPAM poolsß"
+  default     = "10.0.0.0/16"
+}
+
+variable "provision" {
+  type        = bool
+  description = "Flag indicating that the instance should be provisioned. If false then an existing instance will be looked up"
+  default     = false
 }
