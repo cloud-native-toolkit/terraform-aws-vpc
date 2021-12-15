@@ -14,7 +14,7 @@ export AWS_SECRET_ACCESS_KEY=${AWS_SECRET_ACCESS_KEY}
 echo "VPC_ID: ${VPC_ID}"
 echo "REGION: ${REGION}"
 
-aws configure #set region ${REGION}
+# aws configure #set region ${REGION}
 
 echo "Checking VPC exists with ID in AWS: ${VPC_ID}"
 VPC_ID_OUT=$(aws ec2 describe-vpcs --vpc-ids ${VPC_ID} --query 'Vpcs[0].VpcId' --output=json) 
