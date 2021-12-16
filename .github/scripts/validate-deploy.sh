@@ -1,7 +1,7 @@
 #!/bin/bash
 SCRIPT_DIR=$(cd $(dirname "$0"); pwd -P)
 echo "SCRIPT_DIR: ${SCRIPT_DIR}"
-export VPC_ID=$(terraform output -json | jq -r '."dev-vpc-id".value')
+export VPC_ID=$(terraform output -json | jq -r '."vpc_id".value')
 REGION=$(cat terraform.tfvars | grep -E "^region" | sed "s/region=//g" | sed 's/"//g')
 
 echo "VPC_ID: ${VPC_ID}"
