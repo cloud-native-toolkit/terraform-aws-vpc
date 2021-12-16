@@ -31,5 +31,10 @@ variable "internal_cidr" {
 variable "provision" {
   type        = bool
   description = "Flag indicating that the instance should be provisioned. If false then an existing instance will be looked up"
-  default     = true
+  default     = false
+}
+variable "vpc_id" {
+  type        = string
+  description = "The id of the existing VPC instance"
+  default     = ""
 }
