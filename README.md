@@ -1,25 +1,15 @@
-# Starter kit for a Terraform module
+# AWS Cloud VPC module
 
-This is a Starter kit to help with the creation of Terraform modules. The basic structure of a Terraform module is fairly
-simple and consists of the following basic values:
+Provisions a VPC instance and related resources. The full list of resources provisioned is as follows:
 
-- README.md - provides a description of the module
-- main.tf - defiens the logic for the module
-- variables.tf (optional) - defines the input variables for the module
-- outputs.tf (optional) - defines the values that are output from the module
+- VPC instance
+- VPC network acl
+  - allow internal ingress / egress
+  - deny all external traffic
+- VPC security group rules
+  - *ping* - icmp type 8
+  -  tcp - 80
 
-Beyond those files, any other content can be added and organized however you see fit. For example, you can add a `scripts/` directory
-that contains shell scripts executed by a `local-exec` `null_resource` in the terraform module. The contents will depend on what your
-module does and how it does it.
-
-## Instructions for creating a new module
-
-1. Update the title and description in the README to match the module you are creating
-2. Fill out the remaining sections in the README template as appropriate
-3. Implement your logic in the in the main.tf, variables.tf, and outputs.tf
-4. Use releases/tags to manage release versions of your module
-
-## Module overview
 
 ### Description
 
@@ -37,30 +27,49 @@ The module depends on the following software components:
 
 #### Terraform providers
 
-- IBM Cloud provider >= 1.5.3
+- AWS Cloud provider ~> 3.0
 
 ### Module dependencies
 
 This module makes use of the output from other modules:
 
-- Cluster - github.com/cloud-native-toolkit/terraform-ibm-container-platform.git
-- Namespace - github.com/cloud-native-toolkit/terraform-cluster-namespace.git
-- etc
-
 ### Example usage
 
 ```hcl-terraform
-module "argocd" {
-  source = "github.com/cloud-native-toolkit/terraform-tools-argocd.git"
 
-  cluster_config_file = module.dev_cluster.config_file_path
-  cluster_type        = module.dev_cluster.type
-  app_namespace       = module.dev_cluster_namespaces.tools_namespace_name
-  ingress_subdomain   = module.dev_cluster.ingress_hostname
-  olm_namespace       = module.dev_software_olm.olm_namespace
-  operator_namespace  = module.dev_software_olm.target_namespace
-  name                = "argocd"
+terraform {
+  required_version = ">= 0.15.0"
+  required_providers {
+    aws = {
+      source  = "hashicorp/aws"
+      version = "~> 3.0"
+    }
+  }
 }
+
+provider "aws" {
+  region     = var.region
+  access_key = var.access_key
+  secret_key = var.secret_key
+}
+
+module "dev_vpc" {
+
+  source = "github.com/cloud-native-toolkit/terraform-aws-vpc.git"
+
+  provision = var.provision //set true to provision
+  
+  /* Input params required to provision new VPC */
+  prefix_name   = var.prefix_name
+  internal_cidr = var.internal_cidr
+  instance_tenancy = var.instance_tenancy
+  
+  /*
+  To retrieve details of existing VPC, set provision flag to false and provide vpc_id
+  */
+  vpc_id = var.vpc_id
+}
+
 ```
 
 ## Development
