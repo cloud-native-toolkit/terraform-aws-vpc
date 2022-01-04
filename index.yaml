@@ -1,8 +1,8 @@
 id: github.com/cloud-native-toolkit/terraform-aws-vpc
-name: aws-vpc
+name: "aws-vpc"
 type: terraform
 description: ""
 tags:
-  - tools
-  - devops
-versions: []
+  - infrastructure
+  - networking
+versions: [{platforms: [], providers: [{name: aws, source: "hashicorp/aws"}], dependencies: [], variables: [{name: region, scope: global}, {name: name, type: string, description: The name of the vpc instance, default: '#swe-ind-vpc', optional: true}, {name: vpc_id, type: string, description: The id of the vpc instance, default: "", optional: true}, {name: internal_cidr, type: string, description: The cidr range of the internal network.Either provide manually or chose from AWS IPAM poolsß, default: 10.0.0.0/16, optional: true}, {name: external_cidr, type: string, description: The cidr range of the external network, default: 0.0.0.0/0, optional: true}, {name: provision, type: bool, description: Flag indicating that the instance should be provisioned. If false then an existing instance will be looked up, default: true, optional: true}, {name: instance_tenancy, type: string, description: 'Instance is shared / dedicated, etc. #[default, dedicated, host]', default: default, optional: true}, {name: prefix_name, type: string, description: Prefix to be added to the names of resources which are being provisioned, default: swe, optional: true}, {name: enable_dns_support, type: string, description: 'default is true. [true, false]]', default: "true", optional: true}, {name: enable_dns_hostnames, type: string, description: 'default is false. [true, false]]', default: "false", optional: true}], version: v1.0.0, outputs: [{name: vpc, description: 'output "vpc" {   value = data.aws_vpc.vpc    }'}, {name: vpc_id, description: The id for the vpc network}, {name: vpc_arn, description: The arn of the vpc}, {name: default_network_acl_id, description: The id for the default network acl}, {name: default_security_group_id, description: The id of the default security group.}]}]
