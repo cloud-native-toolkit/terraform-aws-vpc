@@ -18,13 +18,11 @@ resource "aws_vpc" "vpc" {
 }
 
 data "aws_vpc" "vpc" {
-  # id = var.provision ? aws_vpc.vpc[0].id : var.vpc_id
   id = local.vpc_id
 }
 
 data "aws_network_acls" "default-vpc-network-acls" {
   vpc_id = data.aws_vpc.vpc.id
-  # vpc_id = local.vpc_id
   filter {
     name   = "default"
     values = ["true"]
@@ -33,7 +31,6 @@ data "aws_network_acls" "default-vpc-network-acls" {
 
 resource "aws_default_network_acl" "default" {
   count = var.provision ? 1 : 0
-
   default_network_acl_id = local.acl_id[0]
   # if no rules defined, deny all traffic in this ACL
   egress {          #allow_internal_egress
@@ -71,32 +68,13 @@ resource "aws_default_network_acl" "default" {
     from_port  = 3389
     to_port    = 3389
   }
-
-  # ingress {         #deny_external_ingress
-  #   protocol   = -1 # -1 'all' protocol
-  #   rule_no    = 500
-  #   action     = "deny"
-  #   cidr_block = "0.0.0.0/0"
-  #   from_port  = 0
-  #   to_port    = 0
-  # }
-
-
   tags = {
     Name = "${local.vpc_name}-default_acl"
   }
 }
 
-#====#
-# resource "aws_security_group" "base" {
-#   name        = "allow_tls"
-#   description = "Allow TLS inbound traffic"
-#   vpc_id      = aws_vpc.aws_vpc.vpc.id
-
-# }
 resource "aws_default_security_group" "default_security_group" {
   count                = var.provision ? 1 : 0
-  #vpc_id = data.aws_vpc.vpc.id
   vpc_id = local.vpc_id
   tags = {
     Name = "${local.vpc_name}-default_sg"
@@ -110,7 +88,6 @@ resource "aws_security_group_rule" "default_inbound_ping" {
   to_port           = 8
   protocol          = "icmp"
   cidr_blocks       = ["0.0.0.0/0"]
-  #security_group_id = aws_default_security_group.default_security_group.id
   security_group_id = element(aws_default_security_group.default_security_group.*, 0).id
 }
 
