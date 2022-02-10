@@ -11,7 +11,7 @@ variable "vpc_id" {
 
 variable "internal_cidr" {  
   type        = string
-  description = "The cidr range of the internal network.Either provide manually or chose from AWS IPAM poolsß"
+  description = "The cidr range of the internal network. Either provide manually or chose from AWS IPAM poolsß"
   default     = "10.0.0.0/16"
 }
 
@@ -47,7 +47,7 @@ variable "enable_dns_support" {
 
 variable "enable_dns_hostnames" {
   type        = string
-  description = "default is false. [true, false]]"
+  description = "Default is false. [true, false]]. Set to true for ROSA cluster"
   default     = false
 }
 
