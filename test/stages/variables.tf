@@ -11,7 +11,7 @@ variable "secret_key"{
   type = string
 }
 
-variable "prefix_name" {
+variable "name_prefix" {
   type        = string
   description = "Prefix to be added to the names of resources which are being provisioned"
   default     = "swe"
@@ -37,4 +37,14 @@ variable "vpc_id" {
   type        = string
   description = "The id of the existing VPC instance"
   default     = ""
+}
+variable "resource_group_name" {
+  type        = string
+  description = "Existing resource group where the IKS cluster will be provisioned."
+  default     = "default"
+}
+
+variable "enabled" {
+  default = true
+  type = bool
 }

@@ -1,9 +1,11 @@
 name: "aws-vpc"
 type: terraform
-description: "Provisions the AWS VPC instance "
+cloudProvider: aws
+description: "Provisions the AWS VPC instance"
 tags:
     - infrastructure
     - networking
+    - aws
 versions:
 - platforms: []
   providers:
@@ -11,19 +13,15 @@ versions:
      source: "hashicorp/aws"
   dependencies: []  
   variables:
-    - name: region
+    - name: resource_group_name
       scope: global
-    - name:   prefix_name
+    - name: name_prefix
       scope: global
     - name: internal_cidr      
-      scope: global
     - name: instance_tenancy
-      scope: global
-    - name: enable_dns_hostnames  
-      scope: global
-    - name: enable_dns_support        
-      scope: global
-      
+    - name: enable_dns_hostnames
+    - name: enable_dns_support
+
     
 
       

@@ -8,29 +8,26 @@ output "vpc_id" {
 }
 
 output "vpc_arn" {
-  value       = data.aws_vpc.vpc.arn
+  value       = local.arn
   description = "The arn of the vpc"
 }
 
 output "default_network_acl_id" {
-  value  = local.acl_id[0]
+  value  = local.acl_id
   #value  = ""
   description = "The id for the default network acl"
 }
 
 output "default_security_group_id" {
-  value       = data.aws_security_group.default_aws_security_group.id
-  #value       = ""
+  value       = local.security_group_id
   description = "The id of the default security group."
 }
 
 output "default_security_group_arn" {
-  value       = data.aws_security_group.default_aws_security_group.arn
-  # value       = ""
+  value       = local.security_group_arn
   description = "The arn of the default security group."
 }
 
-
-
-
-
+output "enabled" {
+  value = var.enabled
+}

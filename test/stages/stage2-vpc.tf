@@ -1,14 +1,18 @@
 module "dev_vpc" {
   source = "./module"
-  provision = var.provision 
+
+  provision        = var.provision
   
   /* Input params required to provision new VPC */
-  prefix_name=var.prefix_name
-  internal_cidr=var.internal_cidr
-  instance_tenancy=var.instance_tenancy
-  
-  /*
-  To retrieve details of existing VPC, set provision flag to false and provide vpc_id
-  */
-  vpc_id=var.vpc_id
+  name_prefix      = var.name_prefix
+  internal_cidr    = var.internal_cidr
+  instance_tenancy = var.instance_tenancy
+  resource_group_name = var.resource_group_name
+  enabled          = var.enabled
+}
+
+resource null_resource print_enabled {
+  provisioner "local-exec" {
+    command = "echo -n '${module.dev_vpc.enabled}' > .enabled"
+  }
 }
