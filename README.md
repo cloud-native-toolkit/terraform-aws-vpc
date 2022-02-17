@@ -13,7 +13,6 @@ Provisions a VPC instance and related resources. The full list of resources prov
 
 ### Description
 
-
 ### Software dependencies
 
 NA
@@ -39,7 +38,6 @@ terraform {
   required_providers {
     aws = {
       source  = "hashicorp/aws"
-      version = "~> 3.0"
     }
   }
 }
@@ -56,17 +54,10 @@ module "dev_vpc" {
   
   /* New VPC Provisioning */
   provision = true
-  prefix_name   = var.prefix_name
+  name_prefix   = var.prefix_name
   internal_cidr = var.internal_cidr
   instance_tenancy = var.instance_tenancy
   enable_dns_hostnames = var.enable_dns_hostnames
   enable_dns_support = var.enable_dns_support
-  
-  /*
-  Get details of existing VPC, uncomment below section
-  */
-  <!-- provision = false
-  vpc_id = var.vpc_id -->
 }
-
 ```

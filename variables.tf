@@ -1,23 +1,18 @@
 variable "name" {
   type        = string
-  description = "The name of the vpc instance"
+  description = "The name of the VPC instance"
   default     = "" #"swe-ind-vpc"
-}
-variable "vpc_id" {
-  type        = string
-  description = "The id of the vpc instance"
-  default     = ""
 }
 
 variable "internal_cidr" {  
   type        = string
-  description = "The cidr range of the internal network. Either provide manually or chose from AWS IPAM poolsß"
+  description = "The cidr range of the internal network for the AWS VPC. Either provide manually or chose from AWS IPAM poolsß"
   default     = "10.0.0.0/16"
 }
 
 variable "external_cidr" {
   type        = string
-  description = "The cidr range of the external network"
+  description = "The cidr range of the external network for the AWS VPC."
   default     = "0.0.0.0/0"
 }
 
@@ -33,7 +28,7 @@ variable "instance_tenancy" {
   default     = "default"
 }
 
-variable "prefix_name" {
+variable "name_prefix" {
   type        = string
   description = "Prefix to be added to the names of resources which are being provisioned"
   default     = "swe"
@@ -51,3 +46,14 @@ variable "enable_dns_hostnames" {
   default     = false
 }
 
+variable "resource_group_name" {
+  type        = string
+  description = "The name of the resource group where the VPC is deployed. On AWS this value becomes a tag."
+  default     = "default"
+}
+
+variable "enabled" {
+  type        = bool
+  description = "Flag to indicate that IBM VPC module should be enabled"
+  default     = true
+}
