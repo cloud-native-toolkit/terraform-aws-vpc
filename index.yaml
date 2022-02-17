@@ -1,8 +1,229 @@
 id: github.com/cloud-native-toolkit/terraform-aws-vpc
-name: "aws-vpc"
+name: aws-vpc
 type: terraform
-description: "Provisions the AWS VPC instance "
+description: Provisions the AWS VPC instance
 tags:
   - infrastructure
   - networking
-versions: [{platforms: [], providers: [{name: aws, source: "hashicorp/aws"}], dependencies: [], variables: [{name: region, scope: global}, {name: prefix_name, scope: global, type: string, description: Prefix to be added to the names of resources which are being provisioned, default: swe, optional: true}, {name: internal_cidr, scope: global, type: string, description: The cidr range of the internal network. Either provide manually or chose from AWS IPAM poolsß, default: 10.0.0.0/16, optional: true}, {name: instance_tenancy, scope: global, type: string, description: 'Instance is shared / dedicated, etc. #[default, dedicated, host]', default: default, optional: true}, {name: enable_dns_hostnames, scope: global, type: string, description: 'Default is false. [true, false]]. Set to true for ROSA cluster', default: "false", optional: true}, {name: enable_dns_support, scope: global, type: string, description: 'default is true. [true, false]]', default: "true", optional: true}, {name: name, type: string, description: The name of the vpc instance, default: '#swe-ind-vpc', optional: true}, {name: vpc_id, type: string, description: The id of the vpc instance, default: "", optional: true}, {name: external_cidr, type: string, description: The cidr range of the external network, default: 0.0.0.0/0, optional: true}, {name: provision, type: bool, description: Flag indicating that the instance should be provisioned. If false then an existing instance will be looked up, default: true, optional: true}], version: v1.0.1, outputs: [{name: vpc, description: 'output "vpc" {   value = data.aws_vpc.vpc    }'}, {name: vpc_id, description: The id for the vpc network}, {name: vpc_arn, description: The arn of the vpc}, {name: default_network_acl_id, description: The id for the default network acl}, {name: default_security_group_id, description: The id of the default security group.}, {name: default_security_group_arn, description: The arn of the default security group.}]}, {platforms: [], providers: [{name: aws, source: "hashicorp/aws"}], dependencies: [], variables: [{name: region, scope: global}, {name: name, type: string, description: The name of the vpc instance, default: '#swe-ind-vpc', optional: true}, {name: vpc_id, type: string, description: The id of the vpc instance, default: "", optional: true}, {name: internal_cidr, type: string, description: The cidr range of the internal network.Either provide manually or chose from AWS IPAM poolsß, default: 10.0.0.0/16, optional: true}, {name: external_cidr, type: string, description: The cidr range of the external network, default: 0.0.0.0/0, optional: true}, {name: provision, type: bool, description: Flag indicating that the instance should be provisioned. If false then an existing instance will be looked up, default: true, optional: true}, {name: instance_tenancy, type: string, description: 'Instance is shared / dedicated, etc. #[default, dedicated, host]', default: default, optional: true}, {name: prefix_name, type: string, description: Prefix to be added to the names of resources which are being provisioned, default: swe, optional: true}, {name: enable_dns_support, type: string, description: 'default is true. [true, false]]', default: "true", optional: true}, {name: enable_dns_hostnames, type: string, description: 'default is false. [true, false]]', default: "false", optional: true}], version: v1.0.0, outputs: [{name: vpc, description: 'output "vpc" {   value = data.aws_vpc.vpc    }'}, {name: vpc_id, description: The id for the vpc network}, {name: vpc_arn, description: The arn of the vpc}, {name: default_network_acl_id, description: The id for the default network acl}, {name: default_security_group_id, description: The id of the default security group.}]}]
+  - aws
+versions:
+  - platforms: []
+    providers:
+      - name: aws
+        source: hashicorp/aws
+    dependencies: []
+    variables:
+      - name: name
+        type: string
+        description: The name of the VPC instance
+        default: ''
+      - name: internal_cidr
+        type: string
+        description: >-
+          The cidr range of the internal network for the AWS VPC. Either provide
+          manually or chose from AWS IPAM poolsß
+        default: 10.0.0.0/16
+      - name: external_cidr
+        type: string
+        description: The cidr range of the external network for the AWS VPC.
+        default: 0.0.0.0/0
+      - name: provision
+        type: bool
+        description: >-
+          Flag indicating that the instance should be provisioned. If false then
+          an existing instance will be looked up
+        default: true
+      - name: instance_tenancy
+        type: string
+        description: 'Instance is shared / dedicated, etc. #[default, dedicated, host]'
+        default: default
+      - name: name_prefix
+        type: string
+        description: >-
+          Prefix to be added to the names of resources which are being
+          provisioned
+        default: swe
+        scope: global
+      - name: enable_dns_support
+        type: string
+        description: default is true. [true, false]]
+        default: 'true'
+      - name: enable_dns_hostnames
+        type: string
+        description: Default is false. [true, false]]. Set to true for ROSA cluster
+        default: 'false'
+      - name: resource_group_name
+        type: string
+        description: >-
+          The name of the resource group where the VPC is deployed. On AWS this
+          value becomes a tag.
+        default: default
+        scope: global
+      - name: enabled
+        type: bool
+        description: Flag to indicate that IBM VPC module should be enabled
+        default: true
+    version: v1.1.0
+    outputs:
+      - name: vpc
+      - name: vpc_id
+        description: The id for the vpc network
+      - name: vpc_arn
+        description: The arn of the vpc
+      - name: default_network_acl_id
+        description: The id for the default network acl
+      - name: default_security_group_id
+        description: The id of the default security group.
+      - name: default_security_group_arn
+        description: The arn of the default security group.
+      - name: enabled
+  - platforms: []
+    providers:
+      - name: aws
+        source: hashicorp/aws
+    dependencies: []
+    variables:
+      - name: region
+        scope: global
+      - name: prefix_name
+        scope: global
+        type: string
+        description: >-
+          Prefix to be added to the names of resources which are being
+          provisioned
+        default: swe
+        optional: true
+      - name: internal_cidr
+        scope: global
+        type: string
+        description: >-
+          The cidr range of the internal network. Either provide manually or
+          chose from AWS IPAM poolsß
+        default: 10.0.0.0/16
+        optional: true
+      - name: instance_tenancy
+        scope: global
+        type: string
+        description: 'Instance is shared / dedicated, etc. #[default, dedicated, host]'
+        default: default
+        optional: true
+      - name: enable_dns_hostnames
+        scope: global
+        type: string
+        description: Default is false. [true, false]]. Set to true for ROSA cluster
+        default: 'false'
+        optional: true
+      - name: enable_dns_support
+        scope: global
+        type: string
+        description: default is true. [true, false]]
+        default: 'true'
+        optional: true
+      - name: name
+        type: string
+        description: The name of the vpc instance
+        default: '#swe-ind-vpc'
+        optional: true
+      - name: vpc_id
+        type: string
+        description: The id of the vpc instance
+        default: ''
+        optional: true
+      - name: external_cidr
+        type: string
+        description: The cidr range of the external network
+        default: 0.0.0.0/0
+        optional: true
+      - name: provision
+        type: bool
+        description: >-
+          Flag indicating that the instance should be provisioned. If false then
+          an existing instance will be looked up
+        default: true
+        optional: true
+    version: v1.0.1
+    outputs:
+      - name: vpc
+        description: output "vpc" {   value = data.aws_vpc.vpc    }
+      - name: vpc_id
+        description: The id for the vpc network
+      - name: vpc_arn
+        description: The arn of the vpc
+      - name: default_network_acl_id
+        description: The id for the default network acl
+      - name: default_security_group_id
+        description: The id of the default security group.
+      - name: default_security_group_arn
+        description: The arn of the default security group.
+  - platforms: []
+    providers:
+      - name: aws
+        source: hashicorp/aws
+    dependencies: []
+    variables:
+      - name: region
+        scope: global
+      - name: name
+        type: string
+        description: The name of the vpc instance
+        default: '#swe-ind-vpc'
+        optional: true
+      - name: vpc_id
+        type: string
+        description: The id of the vpc instance
+        default: ''
+        optional: true
+      - name: internal_cidr
+        type: string
+        description: >-
+          The cidr range of the internal network.Either provide manually or
+          chose from AWS IPAM poolsß
+        default: 10.0.0.0/16
+        optional: true
+      - name: external_cidr
+        type: string
+        description: The cidr range of the external network
+        default: 0.0.0.0/0
+        optional: true
+      - name: provision
+        type: bool
+        description: >-
+          Flag indicating that the instance should be provisioned. If false then
+          an existing instance will be looked up
+        default: true
+        optional: true
+      - name: instance_tenancy
+        type: string
+        description: 'Instance is shared / dedicated, etc. #[default, dedicated, host]'
+        default: default
+        optional: true
+      - name: prefix_name
+        type: string
+        description: >-
+          Prefix to be added to the names of resources which are being
+          provisioned
+        default: swe
+        optional: true
+      - name: enable_dns_support
+        type: string
+        description: default is true. [true, false]]
+        default: 'true'
+        optional: true
+      - name: enable_dns_hostnames
+        type: string
+        description: default is false. [true, false]]
+        default: 'false'
+        optional: true
+    version: v1.0.0
+    outputs:
+      - name: vpc
+        description: output "vpc" {   value = data.aws_vpc.vpc    }
+      - name: vpc_id
+        description: The id for the vpc network
+      - name: vpc_arn
+        description: The arn of the vpc
+      - name: default_network_acl_id
+        description: The id for the default network acl
+      - name: default_security_group_id
+        description: The id of the default security group.
+cloudProvider: aws
