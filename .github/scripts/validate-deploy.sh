@@ -2,14 +2,14 @@
 SCRIPT_DIR=$(cd $(dirname "$0"); pwd -P)
 echo "SCRIPT_DIR: ${SCRIPT_DIR}"
 
-ENABLED=$(cat .enabled)
+# ENABLED=$(cat .enabled)
 
-if [[ "${ENABLED}" == "false" ]]; then
-  echo "The VPC is not enabled. Listing terraform state."
+# if [[ "${ENABLED}" == "false" ]]; then
+#   echo "The VPC is not enabled. Listing terraform state."
 
-  terraform state list
-  exit 0
-fi
+#   terraform state list
+#   exit 0
+# fi
 
 
 export VPC_ID=$(terraform output -json | jq -r '."vpc_id".value')

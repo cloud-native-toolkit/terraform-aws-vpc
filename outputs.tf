@@ -2,6 +2,11 @@ output "vpc" {
   value = data.aws_vpc.vpc
   
 }
+
+output "vpc_name" {
+  value = local.vpc_name
+}
+
 output "vpc_id" {
   value = local.vpc_id
   description = "The id for the vpc network"

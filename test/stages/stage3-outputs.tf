@@ -3,10 +3,17 @@ output "vpc_id" {
     value = module.dev_vpc.vpc_id
 }
 
+output "vpc_name" {
+    depends_on = [module.dev_vpc]
+    value = module.dev_vpc.vpc_name
+}
+
+
 output "vpc" {
     depends_on = [module.dev_vpc]
     value = module.dev_vpc.vpc
 }
+
 
 output "default_security_group_id" {
     depends_on = [module.dev_vpc]

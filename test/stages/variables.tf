@@ -44,7 +44,8 @@ variable "resource_group_name" {
   default     = "default"
 }
 
-variable "enabled" {
-  default = true
-  type = bool
+variable "cloud_provider" {
+  type = string
+  default = "aws"
+  
 }
