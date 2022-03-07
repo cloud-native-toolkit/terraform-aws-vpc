@@ -52,8 +52,4 @@ variable "resource_group_name" {
   default     = "default"
 }
 
-variable "enabled" {
-  type        = bool
-  description = "Flag to indicate that IBM VPC module should be enabled"
-  default     = true
-}
+
