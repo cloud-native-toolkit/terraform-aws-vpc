@@ -1,14 +1,13 @@
 output "vpc" {
+
   depends_on  = [aws_vpc.vpc]
   value = data.aws_vpc.vpc[0]
   
 }
 
 output "vpc_name" {
-  #value = local.vpc_name
   depends_on  = [aws_vpc.vpc]
   value= data.aws_vpc.vpc[0].tags["Name"]
-  
 }
 
 output "vpc_id" {
