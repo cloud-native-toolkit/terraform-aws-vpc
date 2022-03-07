@@ -32,7 +32,3 @@ output "default_security_group_arn" {
   value       = local.security_group_arn
   description = "The arn of the default security group."
 }
-
-output "enabled" {
-  value = var.enabled
-}
