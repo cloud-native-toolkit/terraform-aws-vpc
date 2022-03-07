@@ -19,9 +19,6 @@ jobs:
       matrix:
         testcase:
           - aws_vpc
-        enabled:
-          - true
-          - false
       max-parallel: 1
       fail-fast: true
 

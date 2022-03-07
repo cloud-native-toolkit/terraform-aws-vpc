@@ -2,6 +2,11 @@ output "vpc" {
   value = data.aws_vpc.vpc
   
 }
+
+output "vpc_name" {
+  value = local.vpc_name
+}
+
 output "vpc_id" {
   value = local.vpc_id
   description = "The id for the vpc network"
@@ -26,8 +31,4 @@ output "default_security_group_id" {
 output "default_security_group_arn" {
   value       = local.security_group_arn
   description = "The arn of the default security group."
-}
-
-output "enabled" {
-  value = var.enabled
 }

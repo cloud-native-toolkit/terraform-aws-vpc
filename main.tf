@@ -1,19 +1,19 @@
 locals {
-  acl_id          = var.enabled ? tolist(data.aws_network_acls.default-vpc-network-acls[0].ids)[0] : ""
+  acl_id          = var.provision ? tolist(data.aws_network_acls.default-vpc-network-acls[0].ids)[0] : ""
   resource_group_name = var.resource_group_name != "" && var.resource_group_name != null ? var.resource_group_name : "default"
   prefix_name     = var.name_prefix != "" && var.name_prefix != null ? var.name_prefix : local.resource_group_name
   vpc_name        = var.name != "" ? var.name : "${local.prefix_name}-vpc"
-  vpc_id          = var.enabled ? data.aws_vpc.vpc[0].id : ""
-  cidr_block      = var.enabled ? data.aws_vpc.vpc[0].cidr_block : ""
-  arn             = var.enabled ? data.aws_vpc.vpc[0].arn : ""
+  vpc_id          = var.provision ? data.aws_vpc.vpc[0].id : ""
+  cidr_block      = var.provision ? data.aws_vpc.vpc[0].cidr_block : ""
+  arn             = var.provision ? data.aws_vpc.vpc[0].arn : ""
   security_group_id  = length(data.aws_security_group.default_aws_security_group) > 0 ? data.aws_security_group.default_aws_security_group[0].id : ""
   security_group_arn = length(data.aws_security_group.default_aws_security_group) > 0 ? data.aws_security_group.default_aws_security_group[0].arn : ""
 }
 
 # Create a VPC
 resource "aws_vpc" "vpc" {
-  count                = var.provision && var.enabled ? 1 : 0
-
+  count                = var.provision ? 1 : 0
+  
   cidr_block           = var.internal_cidr
   instance_tenancy     = var.instance_tenancy
   enable_dns_support   = var.enable_dns_support
@@ -26,7 +26,8 @@ resource "aws_vpc" "vpc" {
 }
 
 data "aws_vpc" "vpc" {
-  count = var.enabled ? 1 : 0
+  count = var.provision ? 1 : 0
+  
   depends_on = [aws_vpc.vpc]
 
   tags = {
@@ -35,8 +36,8 @@ data "aws_vpc" "vpc" {
 }
 
 data "aws_network_acls" "default-vpc-network-acls" {
-  count = var.enabled ? 1 : 0
-
+  count = var.provision ? 1 : 0
+  #count = var.provision && var._count > 0 ?  1 : 0
   vpc_id = local.vpc_id
 
   filter {
@@ -46,8 +47,8 @@ data "aws_network_acls" "default-vpc-network-acls" {
 }
 
 resource "aws_default_network_acl" "default" {
-  count = var.provision && var.enabled ? 1 : 0
-
+  count = var.provision ? 1 : 0
+  #count = var.provision && var._count > 0 ?  1 : 0
   default_network_acl_id = local.acl_id
 
   # if no rules defined, deny all traffic in this ACL
@@ -94,8 +95,8 @@ resource "aws_default_network_acl" "default" {
 }
 
 resource "aws_default_security_group" "default_security_group" {
-  count = var.provision && var.enabled ? 1 : 0
-
+  count = var.provision  ? 1 : 0
+  
   vpc_id = local.vpc_id
 
   tags = {
@@ -105,7 +106,8 @@ resource "aws_default_security_group" "default_security_group" {
 }
 
 resource "aws_security_group_rule" "default_inbound_ping" {
-  count = var.provision && var.enabled ? 1 : 0
+  count = var.provision  ? 1 : 0
+  
 
   type              = "ingress"
   from_port         = 8
@@ -116,8 +118,8 @@ resource "aws_security_group_rule" "default_inbound_ping" {
 }
 
 resource "aws_security_group_rule" "default_inbound_http" {
-  count = var.provision && var.enabled ? 1 : 0
-
+  count = var.provision  ? 1 : 0
+  
   type              = "ingress"
   from_port         = 80
   to_port           = 80
@@ -127,8 +129,8 @@ resource "aws_security_group_rule" "default_inbound_http" {
 }
 
 data "aws_security_group" "default_aws_security_group" {
-  count = var.enabled ? 1 : 0
-
+  count = var.provision ? 1 : 0
+  
   vpc_id = local.vpc_id
 
   filter {
