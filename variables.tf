@@ -52,4 +52,21 @@ variable "resource_group_name" {
   default     = "default"
 }
 
+#vpn
+variable "number_subnets_vpn" {
+   description = "list if subnets to attch with vpn"
+   type = number
+   default = 0
+}
 
+variable "vpn_endpoint_id" {
+  type        = string
+  description = "The vpn client endpoint."
+  default     = ""
+}
+
+variable "vpn_subnets_id" {
+  type        = list(string)
+  description = "id of associated subnets with vpn client service"
+  default     = []
+}
