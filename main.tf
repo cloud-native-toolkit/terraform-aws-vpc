@@ -1,5 +1,5 @@
 locals {
-  acl_id          = var.provision ? tolist(data.aws_network_acls.default-vpc-network-acls[0].ids)[0] : ""
+  acl_id          = var.provision && data.aws_network_acls.default-vpc-network-acls != null ? tolist(data.aws_network_acls.default-vpc-network-acls[0].ids)[0] : ""
   resource_group_name = var.resource_group_name != "" && var.resource_group_name != null ? var.resource_group_name : "default"
   prefix_name     = var.name_prefix != "" && var.name_prefix != null ? var.name_prefix : local.resource_group_name
   vpc_name        = var.name != "" ? var.name : "${local.prefix_name}-vpc"
