@@ -1,5 +1,4 @@
-locals {
-  acl_id          = var.provision && data.aws_network_acls.default-vpc-network-acls != null ? tolist(data.aws_network_acls.default-vpc-network-acls[0].ids)[0] : ""
+locals {  
   resource_group_name = var.resource_group_name != "" && var.resource_group_name != null ? var.resource_group_name : "default"
   prefix_name     = var.name_prefix != "" && var.name_prefix != null ? var.name_prefix : local.resource_group_name
   vpc_name        = var.name != "" ? var.name : "${local.prefix_name}-vpc"
@@ -8,6 +7,8 @@ locals {
   arn             = var.provision ? data.aws_vpc.vpc[0].arn : ""
   security_group_id  = length(data.aws_security_group.default_aws_security_group) > 0 ? data.aws_security_group.default_aws_security_group[0].id : ""
   security_group_arn = length(data.aws_security_group.default_aws_security_group) > 0 ? data.aws_security_group.default_aws_security_group[0].arn : ""
+  
+  acl_id          = var.provision && data.aws_network_acls.default-vpc-network-acls != null && length(tolist(data.aws_network_acls.default-vpc-network-acls[0].ids))>0 ? tolist(data.aws_network_acls.default-vpc-network-acls[0].ids)[0] : ""
 }
 
 # Create a VPC
@@ -26,9 +27,8 @@ resource "aws_vpc" "vpc" {
 }
 
 data "aws_vpc" "vpc" {
-  count = var.provision ? 1 : 0
-  
   depends_on = [aws_vpc.vpc]
+  count = var.provision ? 1 : 0
 
   tags = {
     Name = local.vpc_name
@@ -36,7 +36,9 @@ data "aws_vpc" "vpc" {
 }
 
 data "aws_network_acls" "default-vpc-network-acls" {
+  depends_on = [aws_vpc.vpc]  
   count = var.provision ? 1 : 0
+
   #count = var.provision && var._count > 0 ?  1 : 0
   vpc_id = local.vpc_id
 
@@ -47,6 +49,7 @@ data "aws_network_acls" "default-vpc-network-acls" {
 }
 
 resource "aws_default_network_acl" "default" {
+  depends_on = [aws_vpc.vpc]
   count = var.provision ? 1 : 0
   #count = var.provision && var._count > 0 ?  1 : 0
   default_network_acl_id = local.acl_id
