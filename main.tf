@@ -49,6 +49,7 @@ data "aws_network_acls" "default-vpc-network-acls" {
 }
 
 resource "aws_default_network_acl" "default" {
+
   depends_on = [aws_vpc.vpc, data.aws_network_acls.default-vpc-network-acls]
   count = var.provision ? 1 : 0
   #count = var.provision && var._count > 0 ?  1 : 0
