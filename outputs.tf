@@ -23,7 +23,7 @@ output "vpc_arn" {
 }
 
 output "default_network_acl_id" {
-  depends_on  = [aws_vpc.vpc] 
+  depends_on  = [aws_vpc.vpc, data.aws_network_acls.default-vpc-network-acls] 
   value  = local.acl_id
   #value  = ""
   description = "The id for the default network acl"
