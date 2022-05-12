@@ -27,9 +27,9 @@ versions:
     - name: enable_dns_hostnames
     - name: enable_dns_support
     - name: vpn_subnets_id
-        moduleRef:
-        id: aws-vpc-subnets
-        output: subnet_ids
+      moduleRef:
+      id: aws-vpc-subnets
+      output: subnet_ids
 
     
 
