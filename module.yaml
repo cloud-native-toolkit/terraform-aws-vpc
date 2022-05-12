@@ -6,6 +6,11 @@ tags:
     - infrastructure
     - networking
     - aws
+dependencies: 
+      - id: aws-vpc-subnets
+        refs: 
+          - source: github.com/cloud-native-toolkit/terraform-aws-vpc-subnets
+            version: ">= 1.0.0"     
 versions:
 - platforms: []
   providers:
@@ -21,6 +26,10 @@ versions:
     - name: instance_tenancy
     - name: enable_dns_hostnames
     - name: enable_dns_support
+    - name: vpn_subnets_id
+      moduleRef:
+      id: aws-vpc-subnets
+      output: subnet_ids
 
     
 
