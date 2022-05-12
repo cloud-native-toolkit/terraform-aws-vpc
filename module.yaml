@@ -30,7 +30,3 @@ versions:
       moduleRef:
       id: aws-vpc-subnets
       output: subnet_ids
-
-    
-
-      
