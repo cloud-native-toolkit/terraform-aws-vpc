@@ -10,7 +10,11 @@ dependencies:
       - id: aws-vpc-subnets
         refs: 
           - source: github.com/cloud-native-toolkit/terraform-aws-vpc-subnets
-            version: ">= 1.0.0"     
+            version: ">= 1.0.0"
+      - id: aws-client-vpn
+        refs: 
+          - source: github.com/cloud-native-toolkit/terraform-aws-vpn-server
+            version: ">= 1.0.0"           
 versions:
 - platforms: []
   providers:
@@ -30,7 +34,7 @@ versions:
       moduleRef:
       id: aws-vpc-subnets
       output: subnet_ids
-
-    
-
-      
+    - name: vpn_endpoint_id
+      moduleRef:
+      id: aws-client-vpn
+      output: vpn_endpoint_id  
