@@ -142,9 +142,3 @@ data "aws_security_group" "default_aws_security_group" {
     values = ["default"]
   }
 }
-resource "aws_ec2_client_vpn_route" "vpn_route" { 
-  count = var.number_subnets_vpn
-  client_vpn_endpoint_id = var.vpn_endpoint_id
-  destination_cidr_block = var.internal_cidr
-  target_vpc_subnet_id   = var.vpn_subnets_id[count.index]
-}

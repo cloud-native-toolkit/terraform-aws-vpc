@@ -5,16 +5,7 @@ description: "Provisions the AWS VPC instance"
 tags:
     - infrastructure
     - networking
-    - aws
-dependencies: 
-      - id: aws-vpc-subnets
-        refs: 
-          - source: github.com/cloud-native-toolkit/terraform-aws-vpc-subnets
-            version: ">= 1.0.0"
-      - id: aws-client-vpn
-        refs: 
-          - source: github.com/cloud-native-toolkit/terraform-aws-vpn-server
-            version: ">= 1.0.0"           
+    - aws           
 versions:
 - platforms: []
   providers:
@@ -29,12 +20,4 @@ versions:
     - name: internal_cidr      
     - name: instance_tenancy
     - name: enable_dns_hostnames
-    - name: enable_dns_support
-    - name: vpn_subnets_id
-      moduleRef:
-      id: aws-vpc-subnets
-      output: subnet_ids
-    - name: vpn_endpoint_id
-      moduleRef:
-      id: aws-client-vpn
-      output: vpn_endpoint_id  
+    - name: enable_dns_support 
