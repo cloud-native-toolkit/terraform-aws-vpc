@@ -42,8 +42,8 @@ variable "enable_dns_support" {
 
 variable "enable_dns_hostnames" {
   type        = string
-  description = "Default is false. [true, false]]. Set to true for ROSA cluster"
-  default     = false
+  description = "Default is true. [true, false]]. ROSA cluster requires this to be set as true"
+  default     = true
 }
 
 variable "resource_group_name" {
