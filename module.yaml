@@ -5,7 +5,7 @@ description: "Provisions the AWS VPC instance"
 tags:
     - infrastructure
     - networking
-    - aws
+    - aws           
 versions:
 - platforms: []
   providers:
@@ -20,8 +20,4 @@ versions:
     - name: internal_cidr      
     - name: instance_tenancy
     - name: enable_dns_hostnames
-    - name: enable_dns_support
-
-    
-
-      
+    - name: enable_dns_support 

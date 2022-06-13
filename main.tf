@@ -49,6 +49,7 @@ data "aws_network_acls" "default-vpc-network-acls" {
 }
 
 resource "aws_default_network_acl" "default" {
+
   depends_on = [aws_vpc.vpc, data.aws_network_acls.default-vpc-network-acls]
   count = var.provision ? 1 : 0
   #count = var.provision && var._count > 0 ?  1 : 0
@@ -140,10 +141,4 @@ data "aws_security_group" "default_aws_security_group" {
     name   = "group-name"
     values = ["default"]
   }
-}
-resource "aws_ec2_client_vpn_route" "vpn_route" { 
-  count = var.number_subnets_vpn
-  client_vpn_endpoint_id = var.vpn_endpoint_id
-  destination_cidr_block = var.internal_cidr
-  target_vpc_subnet_id   = var.vpn_subnets_id[count.index]
 }
