@@ -40,3 +40,10 @@ output "default_security_group_arn" {
   value       = local.security_group_arn
   description = "The arn of the default security group."
 }
+
+output "vpc_cidr" {
+  depends_on  = [aws_vpc.vpc]   
+  value = var.internal_cidr
+  description = "The internal vpc cidr."
+  
+}
